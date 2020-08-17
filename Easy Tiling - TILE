@@ -1,0 +1,83 @@
+#define ll long long
+#define ull unsigned long long
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+const int N = 100;
+#define mod 1000000007
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+int isprime(int n){
+    int count =0;
+    for(int i=2;i<=sqrt(n);i++)
+    if(n%i==0)count++;
+    if(count)return 0;
+    return 1;
+}
+int gcd(int a, int b) 
+{ 
+    if (a == 0) 
+       return b; 
+    if (b == 0) 
+       return a; 
+    if (a == b) 
+        return a; 
+    if (a > b) 
+        return gcd(a-b, b); 
+    return gcd(a, b-a); 
+} 
+void mul(ll I[][N],ll dim,ll a[][N]){
+    ll b[dim+1][dim+1];
+    for(int i=1;i<=dim;i++){
+        for(int j=1;j<=dim;j++)
+        b[i][j]=0;
+    }
+    for(int i=1;i<=dim;i++){
+        for(int j=1;j<=dim;j++){
+            for(int k=1;k<=dim;k++){
+                b[i][j]= (b[i][j] + (I[i][k]*a[k][j])%mod)%mod;
+            }
+        }
+    }
+    for(int i=1;i<=dim;i++){
+        for(int j=1;j<=dim;j++)
+        I[i][j] = b[i][j];
+        }
+}
+void power(ll a[][N],ll dim ,ll n){
+    ll I[N][N];
+    for(int i=1;i<=dim;i++){
+        for(int j = 1;j<=dim;j++){
+            if(i==j)I[i][j]=1;
+            else I[i][j]=0;
+        }
+    }
+    while(n){
+        if(n%2)mul(I,dim,a);
+        mul(a,dim,a);
+        n=n/2;
+    }
+    for(int i=1;i<=dim;i++){
+        for(int j=1;j<=dim;j++)
+        a[i][j]=I[i][j];
+    }
+}
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        ll n;
+        cin>>n;
+        ll a[N][N];
+        a[1][1]=0;
+        a[1][2]=1;
+        a[2][1]=1;
+        a[2][2]=1;
+        power(a,2,n-1);
+        cout<<(a[1][1]*1+a[2][1]*2)%mod<<endl;
+    }
+    
+    return 0;
+}
+
